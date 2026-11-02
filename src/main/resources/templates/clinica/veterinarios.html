@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Veterinários da Clínica</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+</head>
+<body>
+
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="/home">Clyvo</a>
+			<div class="collapse navbar-collapse">
+				<ul class="navbar-nav">
+					<li class="nav-item"><a class="nav-link active"
+						href="/clinica/veterinarios">Veterinários</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="/clinica/perfil">Perfil</a></li>
+				</ul>
+			</div>
+			<form th:action="@{/logout}" method="post" class="d-flex">
+				<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+				<button type="submit" class="btn btn-outline-light btn-sm">Sair</button>
+			</form>
+		</div>
+	</nav>
+
+	<div class="container mt-4">
+
+		<div class="row">
+			<h1>Veterinários</h1>
+			<p class="text-muted">
+				Clínica: <strong th:text="${clinica.nome}"></strong>
+			</p>
+		</div>
+
+		<div class="row mt-2 mb-2">
+			<div class="col">
+				<a href="/clinica/veterinarios/novo" class="btn btn-primary btn-sm">+
+					Adicionar Veterinário</a>
+			</div>
+		</div>
+
+		<div class="row mt-3">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th scope="col">Nome</th>
+						<th scope="col">CPF</th>
+						<th scope="col">CRMV</th>
+						<th scope="col">Email</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="veterinario : ${veterinarios}">
+						<td>
+							<a th:href="@{/clinica/veterinarios/{id}(id=${veterinario.id})}" th:text="${veterinario.nome}">Dra. Camila Torres</a>
+						</td>
+						<td th:text="${veterinario.cpf}">181.990.622-15</td>
+						<td th:text="${veterinario.crmv}">PR11223</td>
+						<td th:text="${veterinario.email}">camila@email.com</td>
+					</tr>
+					<tr th:if="${veterinarios.isEmpty()}">
+						<td colspan="4" class="text-center text-muted">Nenhum
+							veterinário vinculado a esta clínica.</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

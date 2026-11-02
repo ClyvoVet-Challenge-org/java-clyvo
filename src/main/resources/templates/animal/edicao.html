@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+	crossorigin="anonymous">
+
+<title>Editar Animal</title>
+</head>
+
+<body>
+
+	<div class="container">
+
+		<div class="row mt-4">
+			<h1>Editar Animal</h1>
+		</div>
+
+		<div class="row mt-3">
+
+			<form th:object="${animalForm}"
+				th:action="@{/responsaveis/animais/atualizar/{idAnimal}(idAnimal=${animal.id})}"
+				method="post">
+
+				<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+
+				<!-- NOME -->
+				<label for="nome">Nome:</label> <input id="nome"
+					class="form-control" type="text" th:field="*{nome}">
+				<div style="color: red;" th:if="${#fields.hasErrors('nome')}"
+					th:errors="*{nome}"></div>
+				<br>
+
+				<!-- DATA DE NASCIMENTO -->
+				<label for="dataNascimento">Data de nascimento:</label> <input
+					id="dataNascimento" class="form-control" type="date"
+					th:field="*{dataNascimento}">
+				<div style="color: red;"
+					th:if="${#fields.hasErrors('dataNascimento')}"
+					th:errors="*{dataNascimento}"></div>
+				<br>
+
+				<!-- PESO -->
+				<label for="peso">Peso:</label> <input id="peso"
+					class="form-control" type="number" step="0.01" th:field="*{peso}">
+				<div style="color: red;" th:if="${#fields.hasErrors('peso')}"
+					th:errors="*{peso}"></div>
+				<br>
+
+				<!-- ESPÉCIE -->
+				<label for="especie">Espécie:</label> <input id="especie"
+					class="form-control" type="text" th:field="*{especie}">
+				<div style="color: red;" th:if="${#fields.hasErrors('especie')}"
+					th:errors="*{especie}"></div>
+				<br>
+
+				<!-- RAÇA -->
+				<label for="raca">Raça:</label> <input id="raca"
+					class="form-control" type="text" th:field="*{raca}">
+				<div style="color: red;" th:if="${#fields.hasErrors('raca')}"
+					th:errors="*{raca}"></div>
+				<br>
+
+				<!-- RG -->
+				<label for="rg">RG:</label> <input id="rg" class="form-control"
+					type="text" th:field="*{rg}">
+				<div style="color: red;" th:if="${#fields.hasErrors('rg')}"
+					th:errors="*{rg}"></div>
+				<br>
+
+				<!-- MICROCHIP -->
+				<label for="numeroMicrochip">Número do microchip:</label> <input
+					id="numeroMicrochip" class="form-control" type="text"
+					th:field="*{numeroMicrochip}">
+				<div style="color: red;"
+					th:if="${#fields.hasErrors('numeroMicrochip')}"
+					th:errors="*{numeroMicrochip}"></div>
+				<br>
+
+				<!-- RESPONSÁVEL (somente exibição — não pode ser alterado nesta tela) -->
+				<h3>Responsável</h3>
+				<p>
+					<strong>Nome:</strong> <span th:text="${animal.responsavel.nome}"></span>
+				</p>
+
+				<!-- ENDEREÇO -->
+				<h3>Endereço do Animal</h3>
+
+				<label for="pais">País:</label> <input id="pais"
+					class="form-control" type="text" th:field="*{enderecoAnimal.pais}">
+				<div style="color: red;"
+					th:if="${#fields.hasErrors('enderecoAnimal.pais')}"
+					th:errors="*{enderecoAnimal.pais}"></div>
+				<br> <label for="estado">Estado:</label> <input id="estado"
+					class="form-control" type="text"
+					th:field="*{enderecoAnimal.estado}">
+				<div style="color: red;"
+					th:if="${#fields.hasErrors('enderecoAnimal.estado')}"
+					th:errors="*{enderecoAnimal.estado}"></div>
+				<br> <label for="cidade">Cidade:</label> <input id="cidade"
+					class="form-control" type="text"
+					th:field="*{enderecoAnimal.cidade}">
+				<div style="color: red;"
+					th:if="${#fields.hasErrors('enderecoAnimal.cidade')}"
+					th:errors="*{enderecoAnimal.cidade}"></div>
+				<br> <label for="bairro">Bairro:</label> <input id="bairro"
+					class="form-control" type="text"
+					th:field="*{enderecoAnimal.bairro}">
+				<div style="color: red;"
+					th:if="${#fields.hasErrors('enderecoAnimal.bairro')}"
+					th:errors="*{enderecoAnimal.bairro}"></div>
+				<br> <label for="logradouro">Logradouro:</label> <input
+					id="logradouro" class="form-control" type="text"
+					th:field="*{enderecoAnimal.logradouro}">
+				<div style="color: red;"
+					th:if="${#fields.hasErrors('enderecoAnimal.logradouro')}"
+					th:errors="*{enderecoAnimal.logradouro}"></div>
+				<br> <label for="numeroRua">Número:</label> <input
+					id="numeroRua" class="form-control" type="text"
+					th:field="*{enderecoAnimal.numeroRua}">
+				<div style="color: red;"
+					th:if="${#fields.hasErrors('enderecoAnimal.numeroRua')}"
+					th:errors="*{enderecoAnimal.numeroRua}"></div>
+				<br> <label for="complemento">Complemento:</label> <input
+					id="complemento" class="form-control" type="text"
+					th:field="*{enderecoAnimal.complemento}">
+				<div style="color: red;"
+					th:if="${#fields.hasErrors('enderecoAnimal.complemento')}"
+					th:errors="*{enderecoAnimal.complemento}"></div>
+				<br> <label for="cep">CEP:</label> <input id="cep"
+					class="form-control" type="text" th:field="*{enderecoAnimal.cep}">
+				<div style="color: red;"
+					th:if="${#fields.hasErrors('enderecoAnimal.cep')}"
+					th:errors="*{enderecoAnimal.cep}"></div>
+				<br>
+
+				<button type="submit" class="btn btn-primary">Editar Animal</button>
+
+			</form>
+
+		</div>
+
+		<div class="row mt-3">
+			<a
+				th:href="@{/responsaveis/{idResponsavel}(idResponsavel=${animal.responsavel.id})}">Voltar
+				para o Responsável</a>
+		</div>
+
+	</div>
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+		crossorigin="anonymous">
+</script>
+
+</body>
+</html>

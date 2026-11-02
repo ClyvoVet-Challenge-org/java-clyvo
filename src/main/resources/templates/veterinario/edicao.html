@@ -1,0 +1,57 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Bootstrap CSS -->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+	crossorigin="anonymous">
+<title>Edição</title>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<h1>Editar Veterinário</h1>
+		</div>
+		<div class="row">
+
+			<form th:object="${veterinario}"
+				th:action="@{/vet/atualizar}"
+				method="post">
+
+				<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+
+				Nome: <input class="form-control" type="text" th:field="*{nome}"><br>
+				<div style="color: red;" th:if="${#fields.hasErrors('nome')}"
+					th:errors="*{nome}"></div>
+
+				CPF: <input class="form-control" type="text" th:field="*{cpf}"><br>
+				<div style="color: red;" th:if="${#fields.hasErrors('cpf')}"
+					th:errors="*{cpf}"></div>
+
+				CRMV: <input class="form-control" type="text" th:field="*{crmv}"><br>
+				<div style="color: red;" th:if="${#fields.hasErrors('crmv')}"
+					th:errors="*{crmv}"></div>
+
+				<button type="submit">Editar</button>
+
+			</form>
+
+		</div>
+		<div class="row">
+			<a th:href="@{/vet/perfil}">Voltar ao perfil</a>
+		</div>
+	</div>
+
+	<!-- Option 1: Bootstrap Bundle with Popper -->
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+		crossorigin="anonymous"></script>
+</body>
+</html>

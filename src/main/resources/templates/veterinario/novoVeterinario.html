@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Novo Veterinário</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+	<body>
+		
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark" th:if="${clinica != null}">
+		    <div class="container-fluid">
+		        <a class="navbar-brand" href="/home">Clyvo</a>
+		        <div class="collapse navbar-collapse">
+		            <ul class="navbar-nav">
+		                <li class="nav-item">
+		                    <a class="nav-link active" href="/clinica/veterinarios">Veterinários</a>
+		                </li>
+		                <li class="nav-item">
+		                    <a class="nav-link" href="/clinica/perfil">Perfil</a>
+		                </li>
+		            </ul>
+		        </div>
+		        <form th:action="@{/logout}" method="post" class="d-flex">
+		            <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+		            <button type="submit" class="btn btn-outline-light btn-sm">Sair</button>
+		        </form>
+		    </div>
+		</nav>
+		
+		<div class="container mt-4" style="max-width: 500px;">
+		
+		    <h1>Novo Veterinário</h1>
+		    <p class="text-muted" th:if="${clinica != null}">Clínica: <strong th:text="${clinica.nome}"></strong></p>
+		
+			<form th:object="${veterinario}"
+			      th:action="${clinica != null} ? @{/clinica/veterinarios/salvar} : @{/cadastrar-veterinario}"
+			      method="post">
+		
+		        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+		
+		        <div class="mb-3">
+		            <label for="nome" class="form-label">Nome:</label>
+		            <input id="nome" class="form-control" type="text" th:field="*{nome}">
+		            <div style="color: red;" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></div>
+		        </div>
+		
+		        <div class="mb-3">
+		            <label for="cpf" class="form-label">CPF:</label>
+		            <input id="cpf" class="form-control" type="text" th:field="*{cpf}" placeholder="000.000.000-00">
+		            <div style="color: red;" th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}"></div>
+		        </div>
+		
+		        <div class="mb-3">
+		            <label for="crmv" class="form-label">CRMV:</label>
+		            <input id="crmv" class="form-control" type="text" th:field="*{crmv}" placeholder="UF00000">
+		            <div style="color: red;" th:if="${#fields.hasErrors('crmv')}" th:errors="*{crmv}"></div>
+		        </div>
+		
+		        <div class="mb-3">
+		            <label for="email" class="form-label">Email:</label>
+		            <input id="email" class="form-control" type="email" th:field="*{email}">
+		            <div style="color: red;" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+		        </div>
+		
+		        <div class="mb-3">
+		            <label for="senha" class="form-label">Senha:</label>
+		            <input id="senha" class="form-control" type="password" th:field="*{senha}">
+		            <div style="color: red;" th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}"></div>
+		        </div>
+		
+		        <button type="submit" class="btn btn-primary">Cadastrar</button>
+				<a th:href="${clinica != null} ? @{/clinica/veterinarios} : @{/login}" class="btn btn-secondary">Cancelar</a>
+		
+		    </form>
+		
+		</div>
+		
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+	</body>
+</html>
