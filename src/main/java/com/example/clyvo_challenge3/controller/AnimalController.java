@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.clyvo_challenge3.dto.AnimalEdicaoDTO;
@@ -256,7 +257,8 @@ public class AnimalController {
 	// Endereco e vacinacoes do animal sao removidos junto (CascadeType.REMOVE no Animal).
 	@PostMapping("/responsaveis/animais/remover/{idAnimal}")
 	@Transactional
-	public ModelAndView funcaoRemoverAnimal(Authentication authentication, @PathVariable Long idAnimal) {
+	public ModelAndView funcaoRemoverAnimal(Authentication authentication, @PathVariable Long idAnimal,
+			@RequestParam(required = false) String origem) {
 
 		// O animal existe?
 		Optional<Animal> opAnimal = repAnimal.findById(idAnimal);
@@ -280,6 +282,10 @@ public class AnimalController {
 		repAnimal.delete(animal);
 		System.out.println("Animal " + idAnimal + " removido do banco de dados");
 
+		// Volta para a tela de onde o usuario clicou em Excluir
+		if ("home".equals(origem)) {
+			return new ModelAndView("redirect:/home?excluido");
+		}
 		return new ModelAndView("redirect:/responsaveis/" + idResponsavel);
 	}
 

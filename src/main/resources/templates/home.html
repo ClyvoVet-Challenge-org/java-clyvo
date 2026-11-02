@@ -1,52 +1,222 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Home</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Início - Clyvo</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+	:root { --clyvo: #0f766e; --clyvo-claro: #ccfbf1; }
+	body { background: #f4f6f8; }
+	.hero { background: linear-gradient(120deg, #0f766e, #115e59); color: #fff; }
+	.hero .text-white-50 { color: rgba(255, 255, 255, .75) !important; }
+	.stat { border: 0; border-left: 4px solid var(--clyvo); }
+	.stat .numero { font-size: 2rem; font-weight: 700; color: #0f172a; line-height: 1; }
+	.stat .rotulo { font-size: .85rem; color: #64748b; text-transform: uppercase; letter-spacing: .04em; }
+	.tutor-card .card-header { background: #fff; }
+	.avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--clyvo-claro);
+		color: var(--clyvo); display: inline-flex; align-items: center; justify-content: center; font-weight: 700; }
+	.btn-clyvo { background: var(--clyvo); border-color: var(--clyvo); color: #fff; }
+	.btn-clyvo:hover { background: #115e59; border-color: #115e59; color: #fff; }
+	.table > :not(caption) > * > * { vertical-align: middle; }
+</style>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/home">Clyvo</a>
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav">
-                <li class="nav-item" th:if="${clinica != null}">
-                    <a class="nav-link" href="/clinica/veterinarios" >Veterinários</a>
-                </li>
-                <li class="nav-item" th:if="${clinica != null}">
-                    <a class="nav-link" href="/clinica/perfil">Perfil</a>
-                </li>
-
-					<li class="nav-item" th:if="${veterinario != null}">
-						<a class="nav-link" href="/vet/minhas-consultas">Minhas Consultas</a>
-					</li>
-					<li class="nav-item" th:if="${veterinario != null}"><a
-						class="nav-link" href="/vet/perfil">Perfil</a></li>
+	<nav class="navbar navbar-expand navbar-dark bg-dark">
+		<div class="container-fluid">
+			<a class="navbar-brand fw-semibold" th:href="@{/home}">Clyvo</a>
+			<ul class="navbar-nav me-auto">
+				<li class="nav-item"><a class="nav-link active" th:href="@{/home}">Início</a></li>
+				<li class="nav-item" th:if="${clinica != null}"><a class="nav-link" th:href="@{/clinica/veterinarios}">Veterinários</a></li>
+				<li class="nav-item" th:if="${clinica != null}"><a class="nav-link" th:href="@{/clinica/perfil}">Perfil</a></li>
+				<li class="nav-item" th:if="${veterinario != null}"><a class="nav-link" th:href="@{/vet/minhas-consultas}">Minhas Consultas</a></li>
+				<li class="nav-item" th:if="${veterinario != null}"><a class="nav-link" th:href="@{/vet/perfil}">Perfil</a></li>
 			</ul>
-        </div>
-        <form th:action="@{/logout}" method="post" class="d-flex">
-            <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-            <button type="submit" class="btn btn-outline-light btn-sm">Sair</button>
-        </form>
-    </div>
-</nav>
+			<form th:action="@{/logout}" method="post" class="d-flex">
+				<button type="submit" class="btn btn-outline-light btn-sm">Sair</button>
+			</form>
+		</div>
+	</nav>
 
-<div class="container mt-4">
+	<!-- ===================== VETERINARIO ===================== -->
+	<th:block th:if="${veterinario != null}">
 
-    <div class="row" th:if="${clinica != null}">
-        <h1>Bem-vinda, <span th:text="${clinica.nome}" ></span>!</h1>
-        <p class="text-muted">Use o menu acima para navegar.</p>
-    </div>
-        <div class="row" th:if="${ veterinario != null }">
-        <h1>Bem-vindo, Vet. <span th:text="${veterinario.nome}"></span>!</h1>
-        <p class="text-muted">Use o menu acima para navegar.</p>
-    </div>
+		<section class="hero py-4 mb-4">
+			<div class="container">
+				<p class="text-white-50 mb-1">Painel do veterinário</p>
+				<h1 class="h2 mb-1">Olá, <span th:text="${veterinario.nome}">Dra. Camila</span>!</h1>
+				<p class="text-white-50 mb-0">CRMV <span th:text="${veterinario.crmv}">SP0000</span> · acompanhe seus pacientes e tutores</p>
+			</div>
+		</section>
 
-</div>
+		<div class="container mb-5">
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+			<div th:if="${param.excluido != null}" class="alert alert-success alert-dismissible fade show">
+				Animal excluído com sucesso.
+				<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+			</div>
+
+			<!-- Indicadores -->
+			<div class="row g-3 mb-4">
+				<div class="col-6 col-lg-3">
+					<div class="card stat shadow-sm h-100"><div class="card-body">
+						<div class="numero" th:text="${totalTutores}">0</div>
+						<div class="rotulo mt-2">Tutores atendidos</div>
+					</div></div>
+				</div>
+				<div class="col-6 col-lg-3">
+					<div class="card stat shadow-sm h-100"><div class="card-body">
+						<div class="numero" th:text="${totalAnimais}">0</div>
+						<div class="rotulo mt-2">Pacientes</div>
+					</div></div>
+				</div>
+				<div class="col-6 col-lg-3">
+					<div class="card stat shadow-sm h-100"><div class="card-body">
+						<div class="numero" th:text="${totalConsultas}">0</div>
+						<div class="rotulo mt-2">Consultas</div>
+					</div></div>
+				</div>
+				<div class="col-6 col-lg-3">
+					<div class="card stat shadow-sm h-100"><div class="card-body">
+						<div class="numero" th:text="${#lists.size(proximasConsultas)}">0</div>
+						<div class="rotulo mt-2">Próximas consultas</div>
+					</div></div>
+				</div>
+			</div>
+
+			<div class="row g-4">
+
+				<!-- Meus pacientes -->
+				<div class="col-lg-8">
+					<div class="d-flex justify-content-between align-items-end mb-3">
+						<div>
+							<h2 class="h4 mb-0">Meus pacientes</h2>
+							<p class="text-muted mb-0 small">Tutores que você já atendeu e os animais de cada um</p>
+						</div>
+					</div>
+
+					<div th:if="${#lists.isEmpty(tutores)}" class="alert alert-info">
+						Você ainda não atendeu nenhum tutor.</div>
+
+					<div class="card tutor-card shadow-sm mb-3" th:each="tutor : ${tutores}">
+						<div class="card-header d-flex flex-wrap align-items-center gap-3 py-3">
+							<span class="avatar" th:text="${#strings.substring(tutor.nome, 0, 1)}">M</span>
+							<div class="me-auto">
+								<a class="fw-semibold text-decoration-none text-dark"
+									th:href="@{/responsaveis/{id}(id=${tutor.id})}"
+									th:text="${tutor.nome}">Tutor</a>
+								<div class="small text-muted">
+									<span th:text="${tutor.numeroTelefone}">(00) 00000-0000</span> ·
+									<span th:text="${tutor.email}">email</span>
+								</div>
+							</div>
+							<a class="btn btn-sm btn-clyvo"
+								th:href="@{/responsaveis/{id}/animais/novo(id=${tutor.id})}">+ Adicionar animal</a>
+						</div>
+
+						<div th:if="${#lists.isEmpty(tutor.animais)}" class="card-body text-muted small">
+							Nenhum animal cadastrado para este tutor.</div>
+
+						<div class="table-responsive" th:unless="${#lists.isEmpty(tutor.animais)}">
+							<table class="table table-hover mb-0">
+								<thead class="table-light small">
+									<tr>
+										<th class="ps-3">Animal</th>
+										<th>Espécie / Raça</th>
+										<th>Nascimento</th>
+										<th>Peso</th>
+										<th class="text-end pe-3">Ações</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="animal : ${tutor.animais}">
+										<td class="ps-3 fw-semibold" th:text="${animal.nome}">Nome</td>
+										<td>
+											<span class="badge text-bg-light border" th:text="${animal.especie}">Canina</span>
+											<span class="small text-muted ms-1" th:text="${animal.raca}">Raça</span>
+										</td>
+										<td class="text-nowrap" th:text="${#temporals.format(animal.dataNascimento, 'dd/MM/yyyy')}">01/01/2020</td>
+										<td class="text-nowrap" th:text="${animal.peso} + ' kg'">0 kg</td>
+										<td class="text-end pe-3 text-nowrap">
+											<a class="btn btn-sm btn-outline-primary"
+												th:href="@{/animais/{id}(id=${animal.id})}">Detalhes</a>
+											<a class="btn btn-sm btn-outline-secondary"
+												th:href="@{/responsaveis/animais/edicao/{id}(id=${animal.id})}">Editar</a>
+											<form class="d-inline" method="post"
+												th:action="@{/responsaveis/animais/remover/{id}(id=${animal.id})}"
+												onsubmit="return confirm('Deseja realmente excluir este animal?');">
+												<input type="hidden" name="origem" value="home">
+												<button type="submit" class="btn btn-sm btn-outline-danger">Excluir</button>
+											</form>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+
+				<!-- Proximas consultas -->
+				<div class="col-lg-4">
+					<h2 class="h4 mb-0">Próximas consultas</h2>
+					<p class="text-muted mb-3 small">Agendadas e em andamento</p>
+
+					<div th:if="${#lists.isEmpty(proximasConsultas)}" class="alert alert-light border">
+						Nenhuma consulta agendada.</div>
+
+					<div class="list-group shadow-sm" th:unless="${#lists.isEmpty(proximasConsultas)}">
+						<a class="list-group-item list-group-item-action py-3"
+							th:each="consulta : ${proximasConsultas}"
+							th:href="@{/animais/{id}(id=${consulta.animal.id})}">
+							<div class="d-flex justify-content-between align-items-center mb-1">
+								<span class="fw-semibold" th:text="${consulta.animal.nome}">Animal</span>
+								<span class="badge"
+									th:classappend="${consulta.statusConsulta.name() == 'EM_ANDAMENTO'} ? 'text-bg-warning' : 'text-bg-primary'"
+									th:text="${consulta.statusConsulta.descricao}">Futura</span>
+							</div>
+							<div class="small text-muted"
+								th:text="${#temporals.format(consulta.dataConsulta, 'dd/MM/yyyy')} + ' · ' + ${consulta.animal.responsavel.nome}">data · tutor</div>
+							<div class="small mt-1" th:text="${consulta.historico}">Motivo</div>
+						</a>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</th:block>
+
+	<!-- ===================== CLINICA ===================== -->
+	<th:block th:if="${clinica != null}">
+
+		<section class="hero py-4 mb-4">
+			<div class="container">
+				<p class="text-white-50 mb-1">Painel da clínica</p>
+				<h1 class="h2 mb-1">Bem-vinda, <span th:text="${clinica.nome}">Clínica</span>!</h1>
+				<p class="text-white-50 mb-0">CNPJ <span th:text="${clinica.cnpj}">00.000.000/0000-00</span></p>
+			</div>
+		</section>
+
+		<div class="container mb-5">
+			<div class="row g-3">
+				<div class="col-md-6">
+					<div class="card stat shadow-sm h-100"><div class="card-body">
+						<div class="numero" th:text="${#lists.size(clinica.veterinarios)}">0</div>
+						<div class="rotulo mt-2 mb-3">Veterinários vinculados</div>
+						<a class="btn btn-sm btn-clyvo" th:href="@{/clinica/veterinarios}">Ver veterinários</a>
+					</div></div>
+				</div>
+				<div class="col-md-6">
+					<div class="card stat shadow-sm h-100"><div class="card-body">
+						<div class="numero" th:text="${#lists.size(clinica.enderecos)}">0</div>
+						<div class="rotulo mt-2 mb-3">Unidades cadastradas</div>
+						<a class="btn btn-sm btn-outline-secondary" th:href="@{/clinica/perfil}">Ver perfil da clínica</a>
+					</div></div>
+				</div>
+			</div>
+		</div>
+	</th:block>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
